@@ -1,35 +1,66 @@
-// components/Insert.js
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
 import { TextInput, Button, Title } from "react-native-paper";
+import { API_BASE_URL } from '../config.js';
 
 // Componente responsável por cadastrar um novo usuário no backend
 const DadosInsert = () => {
-  const [nome, setNome] = useState(null);   // Estado para armazenar o nome
-  const [email, setEmail] = useState(null); // Estado para armazenar o email
+  const [nome, setNome] = useState(''); // Estado para armazenar o nome
+  const [email, setEmail] = useState(''); // Estado para armazenar o email
   const [celular, setCelular] = useState(''); // Estado para armazenar o celular
+
+  // Função que valida os campos de entrada, verifica se os campos estão preenchidos e se o celular está no formato correto
+  const validarCampos = () => {
+    if (!nome || !email || !celular) {
+      Alert.alert("Atenção", "Preencha todos os campos!");
+      return false;
+    }
+
+    const celularRegex = /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/;
+    if (!celularRegex.test(celular)) {
+      Alert.alert("Atenção", "Celular inválido! Ex: (11) 91234-5678");
+      return false;
+    }
+
+    return true;
+  };
 
   // Função que envia os dados para a API via POST
   const Add = () => {
-    const url = 'http://localhost:3000/add/'; // URL do endpoint de cadastro
+    if (!validarCampos()) return;
+
+    const url = `${API_BASE_URL}/add/`;
+
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({
         name: nome,
-        email: email
+        email: email,
+        celular: celular,
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       },
     })
       .then((response) => response.json())
-      .then((json) => console.log(json));
+      // Limpa os campos após o cadastro ou avisa se houver erro e exibe o resultado no console
+      .then((json) => {
+        console.log(json);
+        Alert.alert("Sucesso", "Usuário cadastrado com sucesso!");
+        setNome('');
+        setEmail('');
+        setCelular('');
+      })
+      .catch((error) => {
+        console.error(error);
+        Alert.alert("Erro", "Não foi possível cadastrar. Tente novamente.");
+      });
   };
 
   return (
     <View style={styles.container}>
       <Title style={styles.title}>Cadastro de Usuário</Title>
-      
+
       <TextInput
         label="Nome"
         value={nome}

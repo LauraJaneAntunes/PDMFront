@@ -1,45 +1,62 @@
 // components/Delete.js
 import React from "react";
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { Button } from 'react-native-paper';
+import { API_BASE_URL } from '../config.js';
 
-// Componente responsável por deletar um item via API
 const DadosDeletado = (props) => {
-
-  // Função que envia requisição DELETE para o backend com o ID recebido por props
-  const Delete = (id) => {
-    const url = `http://192.168.1.104:3000/delete/${id}`;
-    console.log(`Deletando: ${url}`);
-    
-    fetch(url, {
-      method: 'DELETE',
-    })
-      .then((response) => response.json())
-      .then((json) => console.log(json));
+  const confirmarExclusao = (id) => {
+    Alert.alert(
+      "Confirmar exclusão",
+      "Tem certeza que deseja excluir este contato? Essa ação não pode ser desfeita.",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        {
+          text: "Excluir",
+          style: "destructive",
+          onPress: () => {
+            const url = `${API_BASE_URL}/delete/${id}`;
+            console.log(`Deletando: ${url}`);
+            fetch(url, {
+              method: 'DELETE',
+            })
+              .then((response) => response.json())
+              .then((json) => {
+                console.log(json);
+                props.onDeleted(id); // chama função do pai para atualizar a lista
+              });
+          },
+        },
+      ]
+    );
   };
 
-  turn (
-    <View style={styles.container}>
+  return (
+    <View style={styles.iconContainer}>
       <Button
-        mode="contained"
-        buttonColor="#d32f2f" // Vermelho
-        textColor="#fff"
-        onPress={() => Delete(props.id)}
-        style={styles.button}
+        icon="delete"
+        mode="outlined"
+        size={28}
+        onPress={() => confirmarExclusao(props.id)}
+        style={styles.deleteButton}
       >
-        Excluir
+        Apagar
       </Button>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 8,
-    alignItems: 'flex-start',
+  iconContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    marginTop: 20,
   },
-  button: {
-    borderRadius: 4,
+  deleteButton: {
+    width: "50%",
   },
 });
 

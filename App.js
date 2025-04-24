@@ -1,11 +1,14 @@
 //App.js
-import { StatusBar } from 'expo-status-bar';
+import React from 'react';
 import { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Button } from 'react-native-paper';
-
-import DadosExibido from './components/Exibe';
+import { Icon } from 'react-native-paper';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { API_BASE_URL } from './config';
+import Home from './screens/Home';
 import DadosInsert from './components/Insert';
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   // Estado que armazena os dados dos usuários
@@ -13,9 +16,8 @@ export default function App() {
 
   // useEffect para buscar os dados uma vez ao montar o componente
   useEffect(() => {
-    let url = 'http://192.168.1.104:3000/';
+    fetch(`${API_BASE_URL}/`)
 
-    fetch(url)
       .then((response) => response.json())
       .then((json) => {
         setDados(json); // Atualiza o estado com os dados recebidos
@@ -25,8 +27,7 @@ export default function App() {
 
   // Função para buscar novamente os dados
   const Exibir = () => {
-    let url = 'http://192.168.1.104:3000/';
-    fetch(url)
+    fetch(`${API_BASE_URL}/`)
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
@@ -36,12 +37,12 @@ export default function App() {
 
   // Função para adicionar um novo usuário
   const Add = () => {
-    let url = 'http://172.16.4.101:3000/add/';
-    fetch(url, {
+    fetch(`${API_BASE_URL}/add`, {
       method: 'POST',
       body: JSON.stringify({
         name: 'Marllon',
-        email: '@marllon'
+        email: '@marllon',
+        celular: '1198765432',
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
@@ -53,12 +54,12 @@ export default function App() {
 
   // Função para atualizar parcialmente (PATCH) um usuário
   const Atualizar = (id) => {
-    let url = `http://192.168.67.126:3000/update/${id}`;
-    fetch(url, {
+    fetch(`${API_BASE_URL}/update/${id}`, {
       method: 'PATCH',
       body: JSON.stringify({
         name: 'Lobo',
-        email: '@lobo'
+        email: '@lobo',
+        celular: '1398765432',
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
@@ -70,12 +71,12 @@ export default function App() {
 
   // Função para atualizar completamente (PUT) um usuário
   const Atualizar0 = (id) => {
-    let url = `http://172.68.0.156:3000/put_update/${id}`;
-    fetch(url, {
+    fetch(`${API_BASE_URL}/update/${id}`, {
       method: 'PUT',
       body: JSON.stringify({
         name: 'Lobo',
-        email: '@lobo'
+        email: '@lobo',
+        celular: '1598765432',
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
@@ -87,9 +88,7 @@ export default function App() {
 
   // Função para deletar um usuário
   const Delete = (id) => {
-    let url = `http://172.16.4.101:3000/delete/${id}`;
-    console.log(url);
-    fetch(url, {
+    fetch(`${API_BASE_URL}/update/${id}`, {    
       method: 'DELETE',
     })
       .then((response) => response.json())
@@ -97,38 +96,32 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
-        <Button mode="outlined" onPress={Exibir} style={styles.button}>Exibir</Button>
-        <Button mode="outlined" onPress={Add} style={styles.button}>Inserir</Button>
-        <Button mode="outlined" onPress={() => Delete("67f65973fe21fbccb25640b0")} style={styles.button}>
-          Delete
-        </Button>
-        <Button mode="outlined" onPress={() => Atualizar0("67f660c91c35c66376062545")} style={styles.button}>PUT</Button>
-        <Button mode="outlined" onPress={() => Atualizar("67f660f71c35c66376062549")} style={styles.button}>PATCH</Button>
-
-        <DadosInsert />
-        <DadosExibido campos={campos} />
-
-        <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ color, size }) => {
+            let iconName;
+          
+            if (route.name === 'Contato') iconName = 'account-group-outline';
+            else if (route.name === 'Adicionar Contato') iconName = 'account-plus-outline';
+          
+            return (
+              <Icon source={iconName} color={color} size={size} />
+            );
+          },
+          
+          tabBarActiveTintColor: '#7c3aed',
+          tabBarInactiveTintColor: 'gray',
+        })}
+      >
+        <Tab.Screen name="Contato">
+         {(props) => <Home {...props} campos={campos} setDados={setDados} />}
+        </Tab.Screen>
+        
+        <Tab.Screen 
+          name="Adicionar Contato" 
+          component={DadosInsert} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    padding: 20,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap', // Permite que os botões se ajustem em mais de uma linha se necessário
-    justifyContent: 'space-around', // Distribui os botões com espaçamento entre eles
-    marginBottom: 20, // Espaço entre os botões e o conteúdo abaixo
-  },
-  button: {
-    marginVertical: 6,
-    width: 100, // Define a largura dos botões para que eles caibam na linha
-    marginHorizontal: 5, // Adiciona espaçamento horizontal entre os botões
-  },
-});

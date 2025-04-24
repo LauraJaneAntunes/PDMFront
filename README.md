@@ -16,18 +16,18 @@ O foco é o consumo de uma API utilizando requisições HTTP (GET, POST, PUT, PA
 
 ✅ Deletar registro (DELETE)
 
-
 🛠 Tecnologias Utilizadas:
+
 - React Native
 - Expo
 - Fetch API
 
 Componentes funcionais (Hooks: useState, useEffect)
 
-
 🚀 Como Executar
 
 1. Requisitos
+
 - Node.js
 - Expo CLI (npm install -g expo-cli)
 - Editor de código (VS Code)
@@ -38,11 +38,17 @@ Componentes funcionais (Hooks: useState, useEffect)
 # Clonar o repositório e acessar a pasta
 
 # Instalar as dependências
+
     npm install
 
-# Iniciar o app
-    npx expo start
+# Ajustar seu IP
 
+No arquivo App.js, procure a váriavel: leturl = 'http://seu.IPv4.aqui:3000/';
+Para descobrir seu IP, no windows, abra o terminal e digite: ipconfig
+
+# Iniciar o app
+
+    npx expo start
 
 📌 Observações
 Este projeto consome uma API que deve estar rodando localmente (Node.js + MongoDB).
