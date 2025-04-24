@@ -1,13 +1,13 @@
 // components/Exibe.js
 import React from "react";
-import { FlatList, View, StyleSheet } from "react-native";
+import { FlatList, View, SafeAreaView, StyleSheet } from "react-native";
 import { Card, Text, Title } from "react-native-paper";
 import DadosDeletado from "./Delete";
 
 // Componente responsável por exibir os dados recebidos por props
 const DadosExibido = (props) => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.safeArea}>
       <FlatList
         data={props.campos}
         keyExtractor={(item) => item._id}
@@ -31,7 +31,7 @@ const DadosExibido = (props) => {
           </Card>
         )}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

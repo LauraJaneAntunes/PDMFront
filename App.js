@@ -1,7 +1,7 @@
 //App.js
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-paper';
 
 import DadosExibido from './components/Exibe';
@@ -98,20 +98,18 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Button mode="contained" onPress={Exibir} style={styles.button}>Exibir</Button>
-        <Button mode="contained" onPress={Add} style={styles.button}>Inserir</Button>
-        <Button mode="contained" buttonColor="#d32f2f" onPress={() => Delete("67f65973fe21fbccb25640b0")} style={styles.button}>
+        <Button mode="outlined" onPress={Exibir} style={styles.button}>Exibir</Button>
+        <Button mode="outlined" onPress={Add} style={styles.button}>Inserir</Button>
+        <Button mode="outlined" onPress={() => Delete("67f65973fe21fbccb25640b0")} style={styles.button}>
           Delete
         </Button>
-        <Button mode="contained" onPress={() => Atualizar0("67f660c91c35c66376062545")} style={styles.button}>PUT</Button>
-        <Button mode="contained" onPress={() => Atualizar("67f660f71c35c66376062549")} style={styles.button}>PATCH</Button>
+        <Button mode="outlined" onPress={() => Atualizar0("67f660c91c35c66376062545")} style={styles.button}>PUT</Button>
+        <Button mode="outlined" onPress={() => Atualizar("67f660f71c35c66376062549")} style={styles.button}>PATCH</Button>
 
         <DadosInsert />
         <DadosExibido campos={campos} />
 
         <StatusBar style="auto" />
-      </ScrollView>
     </View>
   );
 }
@@ -120,13 +118,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    padding: 20,
   },
-  scrollContent: {
-    alignItems: 'center',
-    paddingVertical: 20,
+  buttonContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap', // Permite que os botões se ajustem em mais de uma linha se necessário
+    justifyContent: 'space-around', // Distribui os botões com espaçamento entre eles
+    marginBottom: 20, // Espaço entre os botões e o conteúdo abaixo
   },
   button: {
     marginVertical: 6,
-    width: 200,
+    width: 100, // Define a largura dos botões para que eles caibam na linha
+    marginHorizontal: 5, // Adiciona espaçamento horizontal entre os botões
   },
 });
