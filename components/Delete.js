@@ -1,6 +1,6 @@
 // components/Delete.js
 import React from "react";
-import { View, Pressable } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 
 // Componente responsável por deletar um item via API
@@ -18,7 +18,7 @@ const DadosDeletado = (props) => {
       .then((json) => console.log(json));
   };
 
-  eturn (
+  turn (
     <View style={styles.container}>
       <Button
         mode="contained"
