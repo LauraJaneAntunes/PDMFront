@@ -1,6 +1,7 @@
 // components/Exibe.js
 import React from "react";
-import { FlatList, View, Text, StyleSheet } from "react-native";
+import { FlatList, View, StyleSheet } from "react-native";
+import { Card, Text, Title } from "react-native-paper";
 import DadosDeletado from "./Delete";
 
 // Componente responsável por exibir os dados recebidos por props
@@ -8,45 +9,45 @@ const DadosExibido = (props) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={props.campos} // Lista de dados recebida via props
-        keyExtractor={(item) => item._id} // Chave única para cada item
-        renderItem={({ item }) => {
-          return (
-            <View style={styles.card}>
-              <Text style={styles.label}>ID:</Text>
+        data={props.campos}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => (
+          <Card style={styles.card}>
+            <Card.Content>
+              <Title style={styles.label}>ID:</Title>
               <Text>{item._id}</Text>
 
-              <Text style={styles.label}>Nome:</Text>
+              <Title style={styles.label}>Nome:</Title>
               <Text>{item.name}</Text>
 
-              <Text style={styles.label}>Email:</Text>
+              <Title style={styles.label}>Celular:</Title>
+              <Text>{item.phone}</Text>
+
+              <Title style={styles.label}>Email:</Title>
               <Text>{item.email}</Text>
 
-              <DadosDeletado id={item._id} /> {/* Componente para deletar item */}
-            </View>
-          );
-        }}
+              <DadosDeletado id={item._id} />
+            </Card.Content>
+          </Card>
+        )}
       />
     </View>
   );
 };
 
-// Estilos do componente
 const styles = StyleSheet.create({
   container: {
     padding: 10,
   },
   card: {
     marginVertical: 10,
-    padding: 10,
-    backgroundColor: '#00FFFF',
-    borderWidth: 1,
-    borderColor: '#ddd',
+    elevation: 3, // sombra para Android
     borderRadius: 8,
   },
   label: {
-    fontWeight: 'bold',
-  }
+    fontSize: 14,
+    marginTop: 8,
+  },
 });
 
 export default DadosExibido;

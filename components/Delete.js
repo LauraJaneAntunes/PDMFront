@@ -1,6 +1,7 @@
 // components/Delete.js
 import React from "react";
-import { View, Pressable, Text } from 'react-native';
+import { View, Pressable } from 'react-native';
+import { Button } from 'react-native-paper';
 
 // Componente responsável por deletar um item via API
 const DadosDeletado = (props) => {
@@ -17,26 +18,29 @@ const DadosDeletado = (props) => {
       .then((json) => console.log(json));
   };
 
-  return (
-    <View>
-      {/* Botão de exclusão */}
-      <Pressable
-        style={{
-          borderWidth: 1,
-          borderColor: 'black',
-          padding: 8,
-          margin: 5,
-          width: '30%',
-          alignItems: "center",
-          backgroundColor: '#FFCCCC',
-          borderRadius: 4,
-        }}
+  eturn (
+    <View style={styles.container}>
+      <Button
+        mode="contained"
+        buttonColor="#d32f2f" // Vermelho
+        textColor="#fff"
         onPress={() => Delete(props.id)}
+        style={styles.button}
       >
-        <Text style={{ color: '#800000' }}>Excluir</Text>
-      </Pressable>
+        Excluir
+      </Button>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 8,
+    alignItems: 'flex-start',
+  },
+  button: {
+    borderRadius: 4,
+  },
+});
 
 export default DadosDeletado;

@@ -1,7 +1,8 @@
 //App.js
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, FlatList, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
+import { Button } from 'react-native-paper';
 
 import DadosExibido from './components/Exibe';
 import DadosInsert from './components/Insert';
@@ -95,53 +96,37 @@ export default function App() {
       .then((json) => console.log(json));
   };
 
-  /*
-    ⚠️ Atenção:
-    Evite aninhar FlatList diretamente dentro de ScrollView com a mesma orientação.
-    Pode causar problemas de desempenho e bugs (erro VirtualizedLists).
-  */
-
   return (
     <View style={styles.container}>
-      <ScrollView>
-        {/* Botões de Ações */}
-        <Button title='Exibir' onPress={Exibir} />
-        <Button title='Inserir' onPress={Add} />
-        <Button title='Delete' onPress={() => Delete("67f65973fe21fbccb25640b0")} />
-        <Button title='Put' onPress={() => Atualizar0("67f660c91c35c66376062545")} />
-        <Button title='PATCH' onPress={() => Atualizar("67f660f71c35c66376062549")} />
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <Button mode="contained" onPress={Exibir} style={styles.button}>Exibir</Button>
+        <Button mode="contained" onPress={Add} style={styles.button}>Inserir</Button>
+        <Button mode="contained" buttonColor="#d32f2f" onPress={() => Delete("67f65973fe21fbccb25640b0")} style={styles.button}>
+          Delete
+        </Button>
+        <Button mode="contained" onPress={() => Atualizar0("67f660c91c35c66376062545")} style={styles.button}>PUT</Button>
+        <Button mode="contained" onPress={() => Atualizar("67f660f71c35c66376062549")} style={styles.button}>PATCH</Button>
 
-        {/* Componentes de Inserção e Exibição */}
         <DadosInsert />
         <DadosExibido campos={campos} />
 
-        {/* Barra de status */}
         <StatusBar style="auto" />
       </ScrollView>
     </View>
   );
 }
 
-// Estilos
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  scrollContent: {
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingVertical: 20,
+  },
+  button: {
+    marginVertical: 6,
+    width: 200,
   },
 });
-
-/* 
-🧪 FlatList alternativa (comentada):
-
-<FlatList
-  data={campos}
-  renderItem={({ item }) => (
-    <View style={{ margin: 20, backgroundColor: '#1E90FF', border: '1px solid #000', padding: 5 }}>
-      <Text>ID : {item._id}</Text>
-      <Text>NOME : {item.name}</Text>
-    </View>
-  )}
-/> 
-*/

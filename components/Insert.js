@@ -1,11 +1,13 @@
 // components/Insert.js
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
+import { TextInput, Button, Title } from "react-native-paper";
 
 // Componente responsável por cadastrar um novo usuário no backend
 const DadosInsert = () => {
   const [nome, setNome] = useState(null);   // Estado para armazenar o nome
   const [email, setEmail] = useState(null); // Estado para armazenar o email
+  const [celular, setCelular] = useState(''); // Estado para armazenar o celular
 
   // Função que envia os dados para a API via POST
   const Add = () => {
@@ -26,44 +28,56 @@ const DadosInsert = () => {
 
   return (
     <View style={styles.container}>
-      <Text>Nome:</Text>
+      <Title style={styles.title}>Cadastro de Usuário</Title>
+      
       <TextInput
+        label="Nome"
+        value={nome}
+        onChangeText={setNome}
         style={styles.input}
-        onChangeText={(text) => setNome(text)}
-        placeholder="Digite seu nome"
+        mode="outlined"
       />
-      <Text>Email:</Text>
+
       <TextInput
+        label="Email"
+        value={email}
+        onChangeText={setEmail}
         style={styles.input}
-        onChangeText={(text) => setEmail(text)}
-        placeholder="Digite seu email"
         keyboardType="email-address"
+        mode="outlined"
       />
-      <Button
-        title="Cadastrar"
-        onPress={Add}
+
+      <TextInput
+        label="Celular"
+        value={celular}
+        onChangeText={setCelular}
+        style={styles.input}
+        keyboardType="phone-pad"
+        mode="outlined"
       />
+
+      <Button mode="contained" onPress={Add} style={styles.button}>
+        Cadastrar
+      </Button>
     </View>
   );
 };
 
-// Estilização do componente
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
-    borderColor: '#000000',
     margin: 20,
     padding: 10,
-    borderRadius: 5,
+  },
+  title: {
+    marginBottom: 16,
+    fontSize: 20,
   },
   input: {
-    height: 40,
-    marginVertical: 8,
-    borderWidth: 1,
-    borderColor: '#000',
-    paddingHorizontal: 10,
-    borderRadius: 4,
-  }
+    marginBottom: 12,
+  },
+  button: {
+    marginTop: 10,
+  },
 });
 
 export default DadosInsert;
