@@ -120,7 +120,8 @@ export default function App() {
         
         <Tab.Screen 
           name="Adicionar Contato" 
-          component={DadosInsert} />
+          children={(props) => <DadosInsert {...props} setDados={setDados} />} 
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );

@@ -5,7 +5,7 @@ import DadosExibido from '../components/Exibe';
 import { Title, IconButton } from 'react-native-paper';
 
 const Home = (props) => {
-  const { campos, setDados, navigation } = props;
+  const { campos, setDados } = props;
 
   return (
     <View style={styles.container}>

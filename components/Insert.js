@@ -4,7 +4,7 @@ import { TextInput, Button, Title } from "react-native-paper";
 import { API_BASE_URL } from '../config.js';
 
 // Componente responsável por cadastrar um novo usuário no backend
-const DadosInsert = () => {
+const DadosInsert = ({onCadastroSuccess}) => {
   const [nome, setNome] = useState(''); // Estado para armazenar o nome
   const [email, setEmail] = useState(''); // Estado para armazenar o email
   const [celular, setCelular] = useState(''); // Estado para armazenar o celular
@@ -63,9 +63,14 @@ const DadosInsert = () => {
       .then((json) => {
         console.log(json);
         Alert.alert("Sucesso", "Usuário cadastrado com sucesso!");
+        // Limpa os campos após o cadastro
         setNome('');
         setEmail('');
         setCelular('');
+        // Chama a função do prop onCadastroSuccess para atualizar a lista de usuários
+        if (onCadastroSuccess) {
+          onCadastroSuccess(); // Atualiza a lista no componente pai
+        }
       })
       .catch((error) => {
         console.error(error);

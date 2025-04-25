@@ -8,7 +8,7 @@ const EditaContato = ({ contato, onAtualizado }) => {
   const [email, setEmail] = useState('');
   const [celular, setCelular] = useState('');
 
-  //Validação do Front. Verifica se os campos estão preenchidos e se estão no formato correto
+//Validação do Front. Verifica se os campos estão preenchidos e se estão no formato correto
 
   const validarContato = ({ nome, email, celular }) => {
     if (!nome || !email || !celular) {
