@@ -4,26 +4,42 @@ import { TextInput, Button, Title } from "react-native-paper";
 import { API_BASE_URL } from '../config.js';
 
 // Componente responsável por cadastrar um novo usuário no backend
-const DadosInsert = () => {
+const DadosInsert = ({onCadastroSuccess}) => {
   const [nome, setNome] = useState(''); // Estado para armazenar o nome
   const [email, setEmail] = useState(''); // Estado para armazenar o email
   const [celular, setCelular] = useState(''); // Estado para armazenar o celular
 
-  // Função que valida os campos de entrada, verifica se os campos estão preenchidos e se o celular está no formato correto
+  //Validação do Front. Verifica se os campos estão preenchidos e se estão no formato correto
+  
   const validarCampos = () => {
     if (!nome || !email || !celular) {
       Alert.alert("Atenção", "Preencha todos os campos!");
       return false;
     }
-
+  
+    // Validação de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      Alert.alert("Atenção", "Email inválido! Ex: exemplo@email.com");
+      return false;
+    }
+  
+    // Validação de celular
     const celularRegex = /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/;
     if (!celularRegex.test(celular)) {
       Alert.alert("Atenção", "Celular inválido! Ex: (11) 91234-5678");
       return false;
     }
-
+  
+    // Validação de nome
+    if (nome.length < 3) {
+      Alert.alert("Atenção", "O nome deve ter pelo menos 3 caracteres.");
+      return false;
+    }
+  
     return true;
   };
+  
 
   // Função que envia os dados para a API via POST
   const Add = () => {
@@ -47,9 +63,14 @@ const DadosInsert = () => {
       .then((json) => {
         console.log(json);
         Alert.alert("Sucesso", "Usuário cadastrado com sucesso!");
+        // Limpa os campos após o cadastro
         setNome('');
         setEmail('');
         setCelular('');
+        // Chama a função do prop onCadastroSuccess para atualizar a lista de usuários
+        if (onCadastroSuccess) {
+          onCadastroSuccess(); // Atualiza a lista no componente pai
+        }
       })
       .catch((error) => {
         console.error(error);

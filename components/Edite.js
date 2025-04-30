@@ -8,6 +8,30 @@ const EditaContato = ({ contato, onAtualizado }) => {
   const [email, setEmail] = useState('');
   const [celular, setCelular] = useState('');
 
+//Validação do Front. Verifica se os campos estão preenchidos e se estão no formato correto
+
+  const validarContato = ({ nome, email, celular }) => {
+    if (!nome || !email || !celular) {
+      Alert.alert("Atenção", "Preencha todos os campos!");
+      return false;
+    }
+  
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const celularRegex = /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/;
+  
+    if (!emailRegex.test(email)) {
+      Alert.alert("Atenção", "Email inválido!");
+      return false;
+    }
+  
+    if (!celularRegex.test(celular)) {
+      Alert.alert("Atenção", "Celular inválido!");
+      return false;
+    }
+  
+    return true;
+  }; 
+
   useEffect(() => {
     if (contato) {
       setNome(contato.name);
@@ -16,7 +40,11 @@ const EditaContato = ({ contato, onAtualizado }) => {
     }
   }, [contato]);
 
+  // Função que envia os dados para a API via PATCH
   const atualizarContato = () => {
+    const valido = validarContato({ nome, email, celular });
+    if (!valido) return;
+
     fetch(`${API_BASE_URL}/update/${contato._id}`, {
       method: 'PATCH',
       body: JSON.stringify({
@@ -35,7 +63,8 @@ const EditaContato = ({ contato, onAtualizado }) => {
       })
       .catch((err) => 
         console.error('Erro ao atualizar:', err));
-        Alert.alert("Erro", "Ocorreu um problema ao editar o contato.");
+        Alert.alert("Erro", "Ocorreu um problema ao editar o contato."
+      );
   };
 
   return (
